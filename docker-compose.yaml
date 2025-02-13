@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+     context: .
+     dockerfile: build/Dockerfile
+    image: authenticationgatewayexample
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET=supersecretkey
+    volumes:
+      - ./:/go/src/authenticationgateway
+    command: ["/bin/sh", "-c", "go run main.go"]
+
+  krakend:
+    image: devopsfaith/krakend:latest
+    volumes:
+      - ./krakend/krakend.json:/etc/krakend/krakend.json
+    ports:
+      - "8081:8080"
+    depends_on:
+      - api
+
+volumes:
+  krakend_config:

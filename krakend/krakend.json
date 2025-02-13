@@ -1,0 +1,32 @@
+{
+    "$schema": "https://www.krakend.io/schema/v3.json",
+    "version": 3,
+    "extra_config": {
+      "security/jwt": {
+        "secret": "supersecretkey",
+        "alg": "HS256",
+        "disable_jwk_security": true
+      }
+    },
+    "endpoints": [
+      {
+        "endpoint": "/api/orders",
+        "input_headers": [
+            "Authorization"
+          ],
+        "method": "GET",
+        "backend": [
+          {
+            "url_pattern": "/orders",
+            "host": ["host.docker.internal:8080"],
+            "extra_config": {
+              "security/jwt": {
+                "disable": false
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+    
